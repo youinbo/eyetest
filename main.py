@@ -78,6 +78,11 @@ class EyeTrackerBackgroundApp(QWidget):
         PC가 켜질 때 앱이 자동으로 백그라운드 구동되도록 만듭니다.
         """
         try:
+
+            # 📌 핵심: 개발 중(.py)일 때는 시작 프로그램 등록을 아예 실행하지 않음
+            if not getattr(sys, 'frozen', False):
+                return
+            
             key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
             # PyInstaller로 패키징된 .exe 상태인지, 파이썬 소스 코드(.py) 상태인지 확인하여 올바른 실행 경로 확보
             if getattr(sys, 'frozen', False):
@@ -104,6 +109,8 @@ class EyeTrackerBackgroundApp(QWidget):
         # self.tray_icon.setIcon(QIcon("icon.ico"))
         
         # # 우클릭 메뉴 컨테이너 생성 (self를 붙여 메모리 증발 방지)
+        # # 아이콘 설정 시 오류 
+
         # self.tray_menu = QMenu()
         # 📌 외부 'icon.ico' 파일이 없어도 윈도우 기본 컴퓨터 아이콘을 강제로 띄워 눈에 보이게 함
         default_icon = self.style().standardIcon(QStyle.StandardPixmap.SP_ComputerIcon)
